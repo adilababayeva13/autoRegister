@@ -1,7 +1,7 @@
 {
-  "name": "autoRegister",
+  "name": "autoreg",
   "version": "1.0.0",
-  "description": "",
+  "description": "With this module, you can get automatic signup/login system code by just typing database information.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,14 +10,22 @@
     "type": "git",
     "url": "git+https://github.com/adilababayeva13/autoRegister.git"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "signup",
+    "sign",
+    "in",
+    "login",
+    "auto",
+    "code",
+    "registration"
+  ],
+  "author": "adila13",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/adilababayeva13/autoRegister/issues"
   },
   "homepage": "https://github.com/adilababayeva13/autoRegister#readme",
-  "dependencies": {
+  "devDependencies": {
     "fs": "0.0.1-security",
     "path": "^0.12.7"
   }

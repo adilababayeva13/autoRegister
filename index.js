@@ -5,34 +5,42 @@ function arcreate(json) {
    //! database system
    //* info got from user about db 
  let dbName = json.db_name;
- let db_name=json.db_info[0];
- let db_surname=json.db_info[1];
- let db_username=json.db_info[2];
- let db_email=json.db_info[3];
- let db_password=json.db_info[4];
- let db_confirmPassword=json.db_info[5];
+ let lowerName = dbName.toLowerCase();
+ let upperName=lowerName.charAt(0).toUpperCase() + lowerName.slice(1);
+ let info=json.db_info;
+ let db_email=info[3];
+ let db_confirmPassword=info[4];
+ let db_password=info[5];
 
      //*creating models folder
-   fs.mkdir(path.join(__dirname, 'models'), (err) => {
-      if (err) {
-          return console.error(err);
-      }
-      console.log('models folder created succesfully!');
-   });
+   fs.mkdirSync(path.join(__dirname, 'models'));
+   console.log('folder named models created successfully!');
 
      //* creating file in models folder
-  let fileContent = "const mongoose = require('mongoose');";
+  let fileContent = "const mongoose = require('mongoose');\nconst {isEmail} = require('validator');\nconst bcrypt = require('bcrypt');\n\nconst "+lowerName+"Schema = new mongoose.Schema({\n";
   // The absolute path of the new file with its name
-    let filepath = __dirname + '/models/' +dbName +'.js';
-  
-  fs.writeFile(filepath, fileContent, (err) => {
-      if (err) throw err;
-      console.log("The file was succesfully saved!");
-  }); 
-   
-}
+    let filepath = __dirname + '/models/' +upperName +'.js';
+  fs.writeFileSync(filepath, fileContent);
+  console.log("The file named "+upperName +'.js'+" created successfully.");
+ 
+  //*Converting given information to code 
+    for(let i = 0;i<3;i++){
+        if(info[i]!="."){
+          let content="   "+info[i]+":{\n"+"    "+"type:String,\n"+"    "+"required:true\n"+"   "+"},\n";
+          fs.appendFileSync(filepath, content);
+             console.log(info[i] + ' saved!');
+        }
+    }
+
+    //* Email 
+    if(db_email!="."){
+        let content="   "+db_email+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"    "+"unique: true,\n"+"    "+"lowercase: true,\n"+"    "+"validate:isEmail\n"+"   "+"},\n";
+          fs.appendFileSync(filepath, content);
+          console.log(db_email + ' saved!');
+    }
+  }
 
 arcreate({
    "db_name" : "User",
-   "db_info" :["name","surname","username","email","password","confirmPassword"]
+   "db_info" :["name","surname","username","email","confirmPassword","password"]
 });
