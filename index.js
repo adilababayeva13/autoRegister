@@ -38,13 +38,6 @@ function arcreate(json) {
           fs.appendFileSync(filepath, content);
           console.log(db_email + ' saved!');
       }
-   //* Confirm password 
-   if(db_confirmPassword!="."){
-    let content="   "+db_confirmPassword+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"   "+"},\n";
-    fs.appendFileSync(filepath, content);
-    console.log(db_confirmPassword + ' saved!');
-      }
-
    //*password 
    if(db_password!="."){
     let content="   "+db_password+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"    "+"minlength:6\n"+"   "+"}\n});";
