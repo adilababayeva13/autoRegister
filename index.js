@@ -44,6 +44,14 @@ function arcreate(json) {
     fs.appendFileSync(filepath, content);
     console.log(db_password + ' saved!');
       }
+
+   //! Functions 
+   if(db_password!="."){
+    let content=lowerName+"Schema.pre('save',async function (next){\n"+"  const salt = await bcrypt.genSalt();\n"+"  this."+db_password+" = await bcrypt.hash("+"this."+db_password+" ,salt);\n"+"  next();\n"+"});";
+    fs.appendFileSync(filepath, content);
+    console.log(db_password + ' saved!');
+      }
+    
 }
 
       arcreate({
