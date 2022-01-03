@@ -40,7 +40,7 @@ function arcreate(json) {
       }
    //*password 
    if(db_password!="."){
-    let content="   "+db_password+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"    "+"minlength:6\n"+"   "+"}\n});";
+    let content="   "+db_password+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"    "+"minlength:6\n"+"   "+"}\n});\n";
     fs.appendFileSync(filepath, content);
     console.log(db_password + ' saved!');
       }
@@ -49,7 +49,7 @@ function arcreate(json) {
    if(db_password!="."){
     let content=lowerName+"Schema.pre('save',async function (next){\n"+"  const salt = await bcrypt.genSalt();\n"+"  this."+db_password+" = await bcrypt.hash("+"this."+db_password+" ,salt);\n"+"  next();\n"+"});";
     fs.appendFileSync(filepath, content);
-    console.log(db_password + ' saved!');
+    console.log('pre hashing function is created');
       }
     
 }
