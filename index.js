@@ -11,7 +11,6 @@ function arcreate(json) {
       let db_email=info[3];
       let db_confirmPassword=info[4];
       let db_password=info[5];
-
    //*creating models folder
       fs.mkdirSync(path.join(__dirname, 'models'));
       console.log('folder named models created successfully!');
@@ -39,22 +38,31 @@ function arcreate(json) {
           console.log(db_email + ' saved!');
       }
    //*password 
-   if(db_password!="."){
-    let content="   "+db_password+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"    "+"minlength:6\n"+"   "+"}\n});\n";
-    fs.appendFileSync(filepath, content);
-    console.log(db_password + ' saved!');
-      }
+      if(db_password!="."){
+         let content="   "+db_password+":{\n"+"    "+"type:String,\n"+"    "+"required:true,\n"+"    "+"minlength:6\n"+"   "+"}\n});\n";
+         fs.appendFileSync(filepath, content);
+         console.log(db_password + ' saved!');
+         }
 
    //! Functions 
+   //* pre hashing
    if(db_password!="."){
-    let content=lowerName+"Schema.pre('save',async function (next){\n"+"  const salt = await bcrypt.genSalt();\n"+"  this."+db_password+" = await bcrypt.hash("+"this."+db_password+" ,salt);\n"+"  next();\n"+"});";
+    let content=lowerName+"Schema.pre('save',async function (next){\n"+"  const salt = await bcrypt.genSalt();\n"+"  this."+db_password+" = await bcrypt.hash("+"this."+db_password+" ,salt);\n"+"  next();\n"+"});\n";
     fs.appendFileSync(filepath, content);
     console.log('pre hashing function is created');
-      }
-    
+      }    
+   //* login 
+   if(db_password!="."&&db_email!="."){
+      let content=lowerName+"Schema.statics.login = async function(email , password ){\n"+"  const user = await this.findOne({email});\n"+"  if (user) {\n"+"  const auth = await bcrypt.compare(password , user."+db_password+");\n"+"  if(auth){\n"+"     return user;\n"+"  }\n"+"  throw Error('incorrect password');\n"+"}\n"+"  throw Error('incorrect email');\n"+"}\n";
+      fs.appendFileSync(filepath, content);
+        }  
+      //! export file
+      let code ="const "+upperName+" = mongoose.model('"+lowerName+"',"+lowerName+"Schema);\n\n"+"module.exports = "+upperName+";";
+      fs.appendFileSync(filepath, code);
 }
+    
 
-      arcreate({
-        "db_name" : "User",
-        "db_info" :["name","surname","username","email","confirmPassword","password"]
-      });
+ arcreate({
+  "db_name" : "User",
+  "db_info" :["name","surname","username","email","confirmPassword","password"]
+});
